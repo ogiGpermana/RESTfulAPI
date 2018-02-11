@@ -1,5 +1,6 @@
 <?php
 
+use App\Category;
 use App\User;
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +13,9 @@ use App\User;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker\Generator $faker) {
+	static $password;
+	
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
@@ -21,5 +24,12 @@ $factory->define(User::class, function (Faker $faker) {
         'verified' => $verified = $faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
         'verfication_token' => $verified == User::VERIFIED_USER ? null : User::generateVerificationCode(),
         'verified' => $verified = $faker->randomElement([User::ADMIN_USER, User::REGULAR_USER]),
+    ];
+});
+
+$factory->define(Category::class, function (Faker $faker) {
+    return [
+        'name' => $faker->word,
+        'email' => $faker->paragraph(1),
     ];
 });
