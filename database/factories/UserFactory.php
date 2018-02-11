@@ -5,6 +5,8 @@ use App\Product;
 use App\Seller;
 use App\Transaction;
 use App\User;
+use Faker\Generator as Faker;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -16,7 +18,7 @@ use App\User;
 |
 */
 
-$factory->define(User::class, function (Faker\Generator $faker) {
+$factory->define(User::class, function (Faker $faker) {
 	static $password;
 
     return [
@@ -25,7 +27,7 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'password' => $password ?: $password = bcrypt('secret'), // secret
         'remember_token' => str_random(10),
         'verified' => $verified = $faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
-        'verfication_token' => $verified == User::VERIFIED_USER ? null : User::generateVerificationCode(),
+        'verification_token' => $verified == User::VERIFIED_USER ? null : User::generateVerificationCode(),
         'verified' => $verified = $faker->randomElement([User::ADMIN_USER, User::REGULAR_USER]),
     ];
 });
@@ -56,6 +58,6 @@ $factory->define(Transaction::class, function (Faker $faker) {
     return [
         'quantity' => $faker->numberBetween(1, 3),
         'buyer_id' => $buyer->id,
-        'peoduct_id' => $seller->products->random()->id,
+        'product_id' => $seller->products->random()->id,
     ];
 });
