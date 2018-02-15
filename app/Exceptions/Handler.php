@@ -75,12 +75,9 @@ class Handler extends ExceptionHandler
      */
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
-        if ($e->response) {
-            return $e->response;
-        }
+    
+        $errors = $e->validator->errors()->getMessages();
 
-        return $this->errorResponse($e, 422)
-                    ? $this->invalidJson($request, $e)
-                    : $this->invalid($request, $e);
+        return $this->errorResponse($errors, 422);
     }
 }
